@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>xiaotu</title>
+		<meta charset="utf-8">
+		<script src="js/ajax.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			#mydiv {
+				background-color: lightcoral;
+				width: 300px;
+				text-align: center;
+				margin: 0 auto;
+			}
+			
+			#mytext {
+				border: 2px lightcoral dotted;
+				text-align: left;
+			}
+			#submit{
+				background-color: red;
+				border: none;
+			}
+			#submit:hover{
+				background-color: cadetblue;
+			}
+			.wapper {
+				margin: 0 auto;
+				text-align: center;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<div class="wapper">
+			<textarea id="mytext" rows="15" cols="40"></textarea><br>
+			<div id="mydiv">
+				<span id="name">我：</span>
+				<input type="text" name="message" id="message">
+				<input type="button" value="发送" id="submit">
+			</div>
+		</div>
+
+	</body>
+	<script type="text/javascript">
+		var oName = document.getElementById("name");
+		var oMessage = document.getElementById("message");
+		var oMytext = document.getElementById("mytext");
+		var oSubmit = document.getElementById("submit");
+		oSubmit.onclick = function() {
+			oMytext.value += oName.innerHTML + oMessage.value + "\n\n";
+
+			var options = {
+				url: "http://www.tuling123.com/openapi/api?key=b6c2b31062e5446abe58944ebb04c42e&info=",
+				data: message.value + "&userid=wsn",
+				success: function(data) {
+					oMytext.value += "小图:" + data.text + "\n\n";
+					console.log("小图" + data.text + "\n")
+
+				}
+			}
+			ajax(options)
+			oMessage.value = "";
+		}
+	</script>
+
+</html>
