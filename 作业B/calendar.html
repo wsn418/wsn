@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/simplecss.css" />
+		<style type="text/css">
+			.rili {
+				width: 500px;
+				border: 1px solid red;
+			}
+			
+			td:hover {
+				background-color: gainsboro;
+			}
+			
+			tr {
+				height: 50px;
+				width: 30px;
+				margin: auto 0;
+			}
+			
+			#Year {
+				text-align: center;
+				display: inline-block;
+				width: 58px;
+			}
+			
+			#Month {
+				display: inline-block;
+				width: 38px;
+			}
+			
+			#lastMonth {
+				margin-left: 230px;
+			}
+			
+			#lastMonth,
+			#nextMonth {
+				width: 50px;
+				display: inline-block;
+				text-align: center;
+			}
+			
+			#lastMonth:hover,
+			#nextMonth:hover {
+				background-color: darkgray;
+			}
+			/*todo*/
+			#warp{
+				/*//text-align: center;*/
+			}
+			 ul,li{
+			 	
+				list-style-type:none;	
+			 }
+		</style>
+	</head>
+
+	<body>
+		<div class="rili col-md-6">
+
+			<input type="number" min="1990" max="2099" id="Year"></input>年<input type="number" min="1" max="12" id="Month"></input>月
+			<span id="lastMonth">∧</span>
+			<span id="nextMonth">∨</span>
+			<table class="table table-bordered ">
+				<tr>
+					<td>一</td>
+					<td>二</td>
+					<td>三</td>
+					<td>四</td>
+					<td>五</td>
+					<td>六</td>
+					<td>日</td>
+				</tr>
+				<table class="table table-bordered " id="table2">
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+
+			</table>
+		</div>
+		<div class="col-md-6 todo">
+
+			<div id="warp">
+				<h3>待办事项</h3>
+				<ul id="todo">
+					
+				</ul>
+			</div>
+
+		</div>
+		<script type="text/javascript">
+			var nowMonth, nowYear, nowDay;
+			var dayCount;
+			var nowDate = new Date();
+			var storage=window.localStorage;
+			 today = nowDate;
+			nowX = 0, nowY = 0;
+			nowMonth = nowDate.getMonth();
+			nowYear = nowDate.getFullYear();
+			//
+
+			//
+			document.getElementById("Month").value = nowMonth + 1;
+			document.getElementById("Year").value = nowYear;
+
+			//显示本月时间
+			function showDay() {
+				clear();
+				var firstDay = new Date(nowYear, nowMonth, 1);
+				var day = 1,
+					i;
+				dayCounts();
+				for(var row = 0; row < 6; row++) {
+					if(row == 0) i = firstDay.getDay();
+					else i = 0;
+					for(; i < 7 && day < dayCount + 1; i++, day++) {
+						document.getElementById("table2").rows[row].cells[i].innerHTML = day;
+
+						if(document.getElementById("table2").rows[row].cells[i].innerHTML == nowDate.getDate() && today.getFullYear() == nowYear && today.getMonth() == nowMonth) {
+							nowX = row;
+							nowY = i;
+							document.getElementById("table2").rows[row].cells[i].style.backgroundColor = "gray"
+							console.log(today.getMonth()+"==="+nowMonth)
+						}
+
+					}
+				}
+			}
+
+			showDay();
+
+			//判断当年当月有多少天
+			function dayCounts() {
+				var totalDay = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+				if(nowMonth == 1 && (nowYear % 4 == 0 && nowYear % 100 != 0) || (nowYear % 400 == 0))
+					dayCount = 29;
+				else
+					dayCount = totalDay[nowMonth];
+			}
+			//清楚第一行和最后两行因为中间的三行会被替换无需清楚
+			function clear() {
+				for(var i = 0; i < 7; i++) {
+					document.getElementById("table2").rows[0].cells[i].innerHTML = "";
+					document.getElementById("table2").rows[4].cells[i].innerHTML = "";
+				}
+				document.getElementById("table2").rows[5].cells[0].innerHTML = "";
+				document.getElementById("table2").rows[5].cells[1].innerHTML = "";
+				document.getElementById("table2").rows[nowX].cells[nowY].style.backgroundColor = "white"
+			}
+			//下一个月按钮
+			function nextMonth() {
+
+				nowMonth++;
+				if(nowMonth <= 11) document.getElementById("Month").value = nowMonth + 1;
+				else {
+					nowYear++;
+					nowMonth = 0;
+					document.getElementById("Month").value = nowMonth + 1;
+					document.getElementById("Year").value = nowYear;
+				}
+				showDay();
+			}
+			document.getElementById("nextMonth").onclick = nextMonth;
+			//上一个月按钮
+			function lastMonth() {
+
+				nowMonth--;
+				if(nowMonth >= 0) document.getElementById("Month").value = nowMonth + 1;
+				else {
+					nowYear--;
+					nowMonth = 11;
+					document.getElementById("Month").value = nowMonth + 1;
+					document.getElementById("Year").value = nowYear;
+				}
+				showDay();
+			}
+			document.getElementById("lastMonth").onclick = lastMonth;
+			//输入框改变年份
+			function changeYear() {
+				if(this.value >= 1900 && this.value <= 3000) {
+					nowYear = this.value;
+					showDay();
+					//console.log(nowYear)
+				} else {
+					alert("输入年份范围:1990-2099");
+					document.getElementById("Year").value = nowYear;
+				}
+			}
+			document.getElementById("Year").onmousemove = changeYear;
+			document.getElementById("Year").onclick = changeYear;
+			//输入框改变月份
+			function changeMonth() {
+				if(this.value >= 1 && this.value <= 12) {
+					nowMonth = this.value-1;
+					showDay();
+
+				} else {
+					alert("输入月份范围:1-12");
+					document.getElementById("Month").value = nowMonth;
+				}
+				console.log("月="+nowMonth)
+			}
+			//document.getElementById("Month").onmousemove = changeMonth;
+			document.getElementById("Month").onclick = changeMonth;
+
+			//todilist绑定日历事件
+			function todoSthing(){
+				var p = prompt();
+				
+				if(p == null){
+					alert("输入不能为空")
+				}else{
+					console.log("this value" + this.innerHTML)
+					var nowDate = new Date(nowYear,nowMonth,this.innerHTML);
+					 
+					 storage.setItem(nowDate,p);
+					 storage.setItem(nowDate + 1, nowDate);
+					 
+					}
+				sthing()
+			}
+			for(var row = 0; row < 6; row++) {
+				for(var col = 0; col < 7; col++) {
+					var ele = document.getElementById("table2").rows[row].cells[col];
+					ele.onclick = todoSthing;
+				}
+				
+			}
+			function sthing()
+			{
+				var oUl = document.getElementById("todo")
+				while(oUl.hasChildNodes()){
+
+					oUl.removeChild(oUl.firstChild);
+
+				}
+				for(var i = 0, j = 1; i < storage.length; i += 2, j++) //可见，localStorage的key键值为数组，按照存入顺序，0键值为内容，1键值为时间，3键值为内容，以此类推
+				{
+				var key = storage.key(i); //获取内容的键值
+				var value = storage.getItem(key);
+				
+				var time = storage.getItem(key + 1); //根据键值获取内容和时间，根据html，时间的键值比内容大1（这里说的是值，不是键值数组下标）
+				console.log(time+"    "+value)
+				var oLi = document.createElement("li")
+				oLi.innerHTML = time.substring(0,15)+"    "+value;
+				document.getElementById("todo").appendChild(oLi)
+				}
+			}
+			sthing();
+			function clearStorage() {
+			localStorage.clear(); //清楚本地储存
+			alert("date deleted");
+			}
+			//clearStorage();
+		</script>
+	</body>
+
+</html>
