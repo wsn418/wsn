@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+
+		<style type="text/css">
+			p {
+				vertical-align: middle;
+				width: 200px;
+				display: inline-block;
+				margin: 0;
+			}
+			
+			li {
+				list-style-type: none;
+				padding: 0;
+			}
+			
+			ul {
+				padding: 0;
+			}
+			
+			#todo-sth {
+				width: 210px;
+			}
+			
+			.checkIput {
+				height: 20px;
+				width: 20px;
+				display: inline-block;
+				vertical-align: middle;
+			}
+			
+			a {
+				height: 20px;
+				width: 20px;
+				background-color: gray;
+				color: white;
+				display: inline-block;
+				vertical-align: middle;
+				text-align: center;
+				line-height: 20px;
+				margin-left: 10px;
+			}
+			
+			#warp {
+				text-align: center;
+				height: 900px;
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="warp">
+			<div class="header">
+				<input type="" name="" id="todo-sth" value="" />
+				<button id="btn">添加</button>
+			</div>
+			<div class="container">
+				<h3>正在进行</h3>
+				<ul id="todo"></ul>
+				<h3>已经完成</h3>
+				<ul id="done"></ul>
+			</div>
+		</div>
+
+	</body>
+	<script type="text/javascript">
+		$('#btn').click(function() {
+			if($('input').val().length === 0) {
+				alert('非法输入');
+				return;
+			}
+			var $Li = $('<li><input type="checkbox" class="checkIput"/>' + '<p contenteditable="plaintext-only" >' + $('input').val() + '</p>' + '<a class ="del" href="javascript:void(0)">D</a></li>');
+			$('#todo').append($Li);
+			$Li.find('a').click(function() {
+				$(this).closest('li').remove();
+			})
+			$Li.find('input').click(function() {
+				if($(this).prop("checked")) {
+					$(this).closest('li').appendTo($('#done'));
+				} else {
+					$(this).closest('li').appendTo($('#todo'));
+				}
+			})
+			$('input').val("")
+		})
+	</script>
+
+</html>
